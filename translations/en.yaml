@@ -1,0 +1,110 @@
+configuration:
+  log_level:
+    name: Log level
+    description: >
+      Verbosity of MediaMTX logs.
+      error = only errors, debug = very verbose.
+  rtsp:
+    name: Enable RTSP
+    description: >
+      Allow clients to publish and read streams with the RTSP protocol
+      (port 8554 TCP/UDP).
+  rtmp:
+    name: Enable RTMP
+    description: >
+      Allow clients to publish and read streams with the RTMP protocol
+      (port 1935 TCP).
+  hls:
+    name: Enable HLS
+    description: >
+      Allow clients to read streams with the HLS protocol (port 8888 TCP).
+  hls_always_remux:
+    name: HLS – always remux
+    description: >
+      Generate HLS segments even when no reader is connected.
+      Eliminates the initial delay for the first viewer.
+  webrtc:
+    name: Enable WebRTC
+    description: >
+      Allow clients to publish and read streams with the WebRTC protocol
+      (port 8889 TCP for HTTP signalling, port 8189 UDP for ICE media).
+  srt:
+    name: Enable SRT
+    description: >
+      Allow clients to publish and read streams with the SRT protocol
+      (port 8890 UDP).
+  api:
+    name: Enable Control API
+    description: >
+      Expose the MediaMTX REST API on port 9997.
+      Useful for programmatic stream management.
+  auth_enabled:
+    name: Enable authentication
+    description: >
+      Require credentials to publish or read streams.
+      Configure usernames and passwords below.
+  publish_user:
+    name: Publisher username
+    description: Username required to publish (push) a stream.
+  publish_pass:
+    name: Publisher password
+    description: Password required to publish (push) a stream.
+  read_user:
+    name: Reader username
+    description: >
+      Username required to read (play) a stream.
+      Leave empty to reuse the publisher credentials for readers.
+  read_pass:
+    name: Reader password
+    description: >
+      Password required to read (play) a stream.
+      Leave empty to reuse the publisher credentials for readers.
+  record:
+    name: Record streams
+    description: >
+      Record all streams to disk. Files are saved to the path defined below.
+      Requires the /media volume to be writable.
+  record_path:
+    name: Recording path template
+    description: >
+      Directory/filename template for recorded segments.
+      Available variables: %path, %Y, %m, %d, %H, %M, %S, %f, %z, %s.
+  record_format:
+    name: Recording format
+    description: >
+      Container format for recording segments.
+      fmp4 = fragmented MP4 (default, seekable). mpegts = MPEG-TS (compatible).
+  record_delete_after:
+    name: Auto-delete recordings after
+    description: >
+      Automatically delete recording segments older than this duration.
+      Examples: 7d, 24h, 30m. Set to 0s to keep recordings indefinitely.
+  paths:
+    name: Stream paths
+    description: >
+      Define named stream paths. Leave empty to accept any publisher on any path.
+    name:
+      name: Path name
+      description: >
+        Unique name for this stream path, e.g. "camera1" or "~^cam.*" (regex).
+    source:
+      name: Source URL
+      description: >
+        Pull the stream from a remote source. Leave empty for a publisher to
+        push the stream. Examples: rtsp://192.168.1.10/stream,
+        rtmp://server/live/key, rpiCamera.
+    source_on_demand:
+      name: Connect source on demand
+      description: >
+        Only connect to the source URL when a reader requests the stream,
+        saving bandwidth when no one is watching.
+    record:
+      name: Record this path
+      description: Override the global recording setting for this specific path.
+  custom_config:
+    name: Custom configuration (advanced)
+    description: >
+      Raw YAML appended to the generated configuration. Use this to set any
+      MediaMTX option not covered by the fields above (e.g. multicast settings,
+      ICE servers, per-path hooks). See https://github.com/bluenviron/mediamtx
+      for all available options. Values here override the generated settings.

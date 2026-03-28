@@ -1,0 +1,82 @@
+name: "MediaMTX"
+description: >
+  Real-time media server and media proxy based on MediaMTX.
+  Supports publishing, reading, proxying, recording and playback
+  of video/audio streams via RTSP, RTMP, HLS, WebRTC and SRT.
+version: "1.0.0"
+slug: "mediamtx"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+homeassistant: "2023.1.0"
+url: "https://github.com/bluenviron/mediamtx"
+
+# Port mappings: left is container port, right is default host port (null = user must configure)
+ports:
+  8554/tcp: 8554
+  8554/udp: 8554
+  1935/tcp: 1935
+  8888/tcp: 8888
+  8889/tcp: 8889
+  8189/udp: 8189
+  8890/udp: 8890
+  9997/tcp: 9997
+
+ports_description:
+  8554/tcp: "RTSP (TCP)"
+  8554/udp: "RTSP (UDP)"
+  1935/tcp: "RTMP"
+  8888/tcp: "HLS"
+  8889/tcp: "WebRTC (HTTP/WS)"
+  8189/udp: "WebRTC (UDP/ICE)"
+  8890/udp: "SRT"
+  9997/tcp: "Control API"
+
+options:
+  log_level: "info"
+  rtsp: true
+  rtmp: true
+  hls: true
+  hls_always_remux: false
+  webrtc: true
+  srt: true
+  api: false
+  auth_enabled: false
+  publish_user: "publisher"
+  publish_pass: "changeme"
+  read_user: ""
+  read_pass: ""
+  record: false
+  record_path: "/media/recordings/%path/%Y-%m-%d_%H-%M-%S-%f"
+  record_format: "fmp4"
+  record_delete_after: "0s"
+  paths: []
+  custom_config: ""
+
+schema:
+  log_level: "list(error|warn|info|debug)"
+  rtsp: bool
+  rtmp: bool
+  hls: bool
+  hls_always_remux: bool
+  webrtc: bool
+  srt: bool
+  api: bool
+  auth_enabled: bool
+  publish_user: str
+  publish_pass: password
+  read_user: str
+  read_pass: password
+  record: bool
+  record_path: str
+  record_format: "list(fmp4|mpegts)"
+  record_delete_after: str
+  paths:
+    - name: str
+      source: str
+      source_on_demand: bool
+      record: bool
+  custom_config: str
