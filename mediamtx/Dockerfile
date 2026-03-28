@@ -1,17 +1,10 @@
-ARG BUILD_FROM
+FROM bluenviron/mediamtx:1
 
-# ── Stage 1: grab the mediamtx binary ────────────────────────────────────────
-FROM bluenviron/mediamtx:1 AS mediamtx-source
+# Install bash and jq (used by the startup script to parse options.json)
+RUN apk add --no-cache bash jq
 
-# ── Stage 2: HA base image with bashio / S6 overlay ──────────────────────────
-FROM ${BUILD_FROM}
+# Copy startup script
+COPY rootfs/run.sh /run.sh
+RUN chmod +x /run.sh
 
-# Copy the statically-compiled mediamtx binary from the upstream image
-COPY --from=mediamtx-source /mediamtx /usr/bin/mediamtx
-
-# Copy add-on filesystem overlay (S6 services, scripts)
-COPY rootfs /
-
-RUN chmod a+x \
-      /etc/services.d/mediamtx/run \
-      /etc/services.d/mediamtx/finish
+CMD ["/run.sh"]

@@ -1,3 +1,0 @@
-#!/usr/bin/with-contenv bashio
-# shellcheck shell=bash
-bashio::log.warning "MediaMTX exited (exit code: $1)."
