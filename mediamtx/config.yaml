@@ -38,6 +38,7 @@ ports_description:
 options:
   log_level: "info"
   rtsp: true
+  rtsp_transports: "udp,multicast,tcp"
   rtmp: true
   hls: true
   hls_always_remux: false
@@ -59,6 +60,7 @@ options:
 schema:
   log_level: "list(error|warn|info|debug)"
   rtsp: bool
+  rtsp_transports: str?
   rtmp: bool
   hls: bool
   hls_always_remux: bool
@@ -76,7 +78,32 @@ schema:
   record_delete_after: str
   paths:
     - name: str
-      source: str
-      source_on_demand: bool
-      record: bool
+      source: str?
+      source_fingerprint: str?
+      source_on_demand: bool?
+      source_on_demand_start_timeout: str?
+      source_on_demand_close_after: str?
+      max_readers: int?
+      override_publisher: bool?
+      rtsp_transport: str?
+      rtsp_any_port: bool?
+      rtsp_range_type: str?
+      rtsp_range_start: str?
+      source_redirect: str?
+      record: bool?
+      record_path: str?
+      record_format: str?
+      record_part_duration: str?
+      record_segment_duration: str?
+      record_delete_after: str?
+      run_on_init: str?
+      run_on_init_restart: bool?
+      run_on_demand: str?
+      run_on_demand_restart: bool?
+      run_on_demand_start_timeout: str?
+      run_on_demand_close_after: str?
+      run_on_ready: str?
+      run_on_ready_restart: bool?
+      run_on_read: str?
+      run_on_read_restart: bool?
   custom_config: str

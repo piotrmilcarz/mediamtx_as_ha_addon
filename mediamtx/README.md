@@ -70,7 +70,7 @@ Example — configure a specific camera path with on-demand pulling:
 paths:
   garden_cam:
     source: rtsp://admin:pass@192.168.1.20/h264/ch1/main/av_stream
-    sourceOnDemand: true
+    source_on_d_emand: true
     record: true
 ```
 
