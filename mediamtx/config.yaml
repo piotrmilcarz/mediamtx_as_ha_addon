@@ -80,6 +80,7 @@ schema:
     - name: str
       source: str?
       source_fingerprint: str?
+      source_protocol: str?
       source_on_demand: bool?
       source_on_demand_start_timeout: str?
       source_on_demand_close_after: str?
