@@ -143,44 +143,20 @@ printf '\npaths:\n' >> "${CONFIG}"
 PATHS_COUNT=$(jq '.paths | length' "${OPTIONS}")
 
 if [[ "${PATHS_COUNT}" -gt 0 ]]; then
-    # Only write a field if it is non-empty/non-null
-    wf() { [[ -n "$2" ]] && printf '    %s: %s\n' "$1" "$2" >> "${CONFIG}"; }
-
     while IFS= read -r path_json; do
-        pj() { printf '%s' "${path_json}" | jq -r "$1"; }
-        pjopt() { printf '%s' "${path_json}" | jq -r "$1 // empty"; }
+        NAME=$(printf '%s' "${path_json}" | jq -r '.name')
+        SOURCE=$(printf '%s' "${path_json}" | jq -r '.source // empty')
+        SOURCE_ON_DEMAND=$(printf '%s' "${path_json}" | jq -r '.source_on_demand // false')
+        PATH_RECORD=$(printf '%s' "${path_json}" | jq -r '.record')
 
-        NAME=$(pj '.name')
         printf '  %s:\n' "${NAME}" >> "${CONFIG}"
 
-        wf source                      "$(pjopt '.source')"
-        wf sourceFingerprint           "$(pjopt '.source_fingerprint')"
-        wf sourceOnDemand              "$(pjopt '.source_on_demand')"
-        wf sourceOnDemandStartTimeout  "$(pjopt '.source_on_demand_start_timeout')"
-        wf sourceOnDemandCloseAfter    "$(pjopt '.source_on_demand_close_after')"
-        wf maxReaders                  "$(pjopt '.max_readers')"
-        wf overridePublisher           "$(pjopt '.override_publisher')"
-        wf rtspTransport               "$(pjopt '.rtsp_transport')"
-        wf rtspAnyPort                 "$(pjopt '.rtsp_any_port')"
-        wf rtspRangeType               "$(pjopt '.rtsp_range_type')"
-        wf rtspRangeStart              "$(pjopt '.rtsp_range_start')"
-        wf sourceRedirect              "$(pjopt '.source_redirect')"
-        wf record                      "$(pjopt '.record')"
-        wf recordPath                  "$(pjopt '.record_path')"
-        wf recordFormat                "$(pjopt '.record_format')"
-        wf recordPartDuration          "$(pjopt '.record_part_duration')"
-        wf recordSegmentDuration       "$(pjopt '.record_segment_duration')"
-        wf recordDeleteAfter           "$(pjopt '.record_delete_after')"
-        wf runOnInit                   "$(pjopt '.run_on_init')"
-        wf runOnInitRestart            "$(pjopt '.run_on_init_restart')"
-        wf runOnDemand                 "$(pjopt '.run_on_demand')"
-        wf runOnDemandRestart          "$(pjopt '.run_on_demand_restart')"
-        wf runOnDemandStartTimeout     "$(pjopt '.run_on_demand_start_timeout')"
-        wf runOnDemandCloseAfter       "$(pjopt '.run_on_demand_close_after')"
-        wf runOnReady                  "$(pjopt '.run_on_ready')"
-        wf runOnReadyRestart           "$(pjopt '.run_on_ready_restart')"
-        wf runOnRead                   "$(pjopt '.run_on_read')"
-        wf runOnReadRestart            "$(pjopt '.run_on_read_restart')"
+        if [[ -n "${SOURCE}" ]]; then
+            printf '    source: %s\n'        "${SOURCE}"           >> "${CONFIG}"
+            printf '    sourceOnDemand: %s\n' "${SOURCE_ON_DEMAND}" >> "${CONFIG}"
+        fi
+
+        printf '    record: %s\n' "${PATH_RECORD}" >> "${CONFIG}"
     done < <(jq -c '.paths[]' "${OPTIONS}")
 else
     printf '  all_others:\n' >> "${CONFIG}"
