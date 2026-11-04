@@ -4,8 +4,7 @@ FROM bluenviron/mediamtx:1 AS mediamtx-source
 # Use plain Alpine as runtime — no ghcr.io, has apk and a real shell
 FROM alpine:3.19
 
-# Install bash and jq for the startup script
-RUN apk add --no-cache bash jq
+RUN apk add --no-cache bash jq yq tzdata
 
 # Copy the static mediamtx binary
 COPY --from=mediamtx-source /mediamtx /mediamtx

@@ -3,9 +3,11 @@ description: >
   Real-time media server and media proxy based on MediaMTX.
   Supports publishing, reading, proxying, recording and playback
   of video/audio streams via RTSP, RTMP, HLS, WebRTC and SRT.
-version: "1.0.0"
+version: "1.0.1"
 slug: "mediamtx"
 init: false
+map:
+  - media:rw
 arch:
   - aarch64
   - amd64
@@ -51,7 +53,7 @@ options:
   read_user: ""
   read_pass: ""
   record: false
-  record_path: "/media/recordings/%path/%Y-%m-%d_%H-%M-%S-%f"
+  record_path: "/media/recordings/%path/%Y-%m-%d/%Y-%m-%d_%H-%M-%S.%f%z"
   record_format: "fmp4"
   record_delete_after: "0s"
   paths: []

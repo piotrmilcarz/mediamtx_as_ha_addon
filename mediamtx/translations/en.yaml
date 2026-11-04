@@ -104,7 +104,7 @@ configuration:
   custom_config:
     name: Custom configuration (advanced)
     description: >
-      Raw YAML appended to the generated configuration. Use this to set any
-      MediaMTX option not covered by the fields above (e.g. multicast settings,
-      ICE servers, per-path hooks). See https://github.com/bluenviron/mediamtx
-      for all available options. Values here override the generated settings.
+      A single YAML mapping merged over the generated configuration. Nested
+      mappings merge; arrays and scalar values replace generated values.
+      Empty or null documents add no overrides. Use MediaMTX camelCase option names. Invalid YAML or duplicate keys prevent
+      startup. See https://github.com/bluenviron/mediamtx for available options.
